@@ -108,44 +108,36 @@ Config.Lang = {
 	['gen_anchor_boat_off'] = 'You have unanchored the boat.',
 	['gen_anchor_boat_on'] = 'You have anchored the boat.',
 
-
-	
-
-
-
-	
-	
-
-	['bus_how_to'] = 'Long explanation here',
+-- Bus Language
+	['bus_how_to'] = 'Drive to each spot marked on your route and wait for either a passenger to get on or for the passsenger to get off. Payment is made when the passanger gets off the bus. If you skip a stop you must return their to pick up/drop off the passenger.',
 	['bus_route_complete'] = 'You have completed the route, return to the bus terminal to return your vehicle or ask for a new route!',
 	['bus_on_route'] = 'You have already been assigned a route, please finish it before requesting a new one!',
 	['bus_start'] = 'Go ahead and complete the route I sent you!',
 	['bus_get_on'] = 'A passanger is getting on.',
 	['bus_get_off'] = 'A passanger is getting off.',
 
-
-
-	['forklift_how_to'] = 'Long explanation here',
+-- Forklift Language
+	['forklift_how_to'] = 'Take the forklift ot the indcated spot to pick up the pallet, use numpad 5 and numpad 8 to lower/raise the forks. Drop off the pallet at the indicated truck for payment.',
 	['forklift_start'] = 'Go grab the ordered pallet and put it in the marked truck!',
 	['forklift_on_job'] = 'You have not finished the current order!',
 	['forklift_job_complete'] = 'You have completed the order, return the forklift or ask for a new order!',
 
-	['taxi_how_to'] = 'Long explanation here',
+-- Taxi Language
+	['taxi_how_to'] = 'After a period of time you will be provided a fare you can choose to accept or decline, if you decline you will need to wait for another fare to appear. Upon acceptance pick up the indiviudal and drop them off for payment.',
 	['taxi_start'] = 'Get out there and drive around, I will send you your first fare soon!',
 	['taxi_working'] = 'Get out there and finish some fares!',
-	
 	['taxi_menu_header_1'] = 'Incoming Taxi Request:\nName: ',
 	['taxi_menu_header_2'] = '\nEstimated Fare: $',
 	['taxi_menu_yes'] = 'Accept Fare',
 	['taxi_menu_no'] = 'Decline Fare',
 	['taxi_get_on'] = 'A passanger is getting on.',
 	['taxi_get_off'] = 'A passanger is getting off.',
-	
 	['taxi_bring_client'] = 'Bring the customer to their destination!',
 	['taxi_fare_accepted'] = 'You accepted the fare, go pick up ',
 	['taxi_fare_declined'] = 'You declined the fare, wait for another request!',
 	['taxi_route_complete'] = 'You have completed the fare, you will receive another fare when it is available!',
 
+-- Scuba Language
 	['scuba_how_to'] = 'Long explanation here',
 	['scuba_start'] = 'Go to the indicated area and search for the crates, make sure you have your gear before you go! The following amount of crates were detected in the area:',
 	['scuba_on_job'] = 'You already have an indicated scuba dive location!',
@@ -156,21 +148,23 @@ Config.Lang = {
 	['scuba_50'] = 'Tank Oxygen is at 50%!',
 	['scuba_25'] = 'Tank Oxygen is at 25%!',
 	['scuba_in_water'] = 'You can not do this while in water!',
-
+	
+-- Heli Language
 	['heli_how_to'] = 'Long explanation here',
 	['heli_start'] = 'Go pick up priority crate delivery and deliver it to the customer!',
 	['heli_on_job'] = 'You have not finished the current order!',
 	['heli_job_complete'] = 'You have completed the order, return back to the heli pad and either return the helicopter or ask for a new order!',
 
-	['jetski_how_to'] = 'Long explanation here',
+-- Lifeguard Language
+	['jetski_how_to'] = 'Get to the inidcated spot to pick up the civilian drowning, then bring them back to the lifeguard to save them and get payment.',
 	['jetski_start'] = 'Go check out this area, we got a call saying someone needs help!',
 	['jetski_on_job'] = 'You have not checked out that last report!',
 	['jetski_job_complete'] = 'You saved them! Return your vehicle or check for more reports by talking to the lifeguard.',
 	['jetski_help_civ'] = 'You found the report! Stop near the civilian to help them!',
 	['jetski_return_civ'] = 'Return the civilian to the lifeguard to make sure they are okay!',
 	
-
-	['garbage_how_to'] = 'Long explanation here',
+-- Garbage Language
+	['garbage_how_to'] = 'Drive to each marked location to pick up the garbage and then throw the garbage bag in the truck. Once all stops are completed payment will be made.',
 	['garbage_start'] = 'Follow the mark route to grab the garbage and throw it in the truck',
 	['garbage_on_job'] = 'You have not finished the current route assigned to you!',
 	['garbage_search_bin_3D'] = 'Press ~r~[E]~w~ to search garbage.',
@@ -181,8 +175,6 @@ Config.Lang = {
 	['garbage_item_find'] = 'You found an item in the garbage!',
 	['garbage_item_nofind'] = 'There is nothing in the garbage.',
 	['garbage_in_truck'] = 'The garbage has been loaded, head to the next spot!',
-
-
 }
 
 Config.ErrorCodes = {
