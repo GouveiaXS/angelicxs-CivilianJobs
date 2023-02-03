@@ -267,7 +267,7 @@ if Config.GarbageJobOn then
                             local vehiclecoords = GetOffsetFromEntityInWorldCoords(MissionVehicle, 0.0, -4.5, 0.0)
                             local vDist = #(coord-vehiclecoords)
                             if vDist <= 5 then
-                                DrawText3Ds(vehiclecoords[i].x, vehiclecoords[i].y, vehiclecoords[i].z, Config.Lang['garbage_put_garbage'])
+                                DrawText3Ds(vehiclecoords.x, vehiclecoords.y, vehiclecoords.z, Config.Lang['garbage_put_garbage'])
                                 if IsControlJustReleased(0,47) then
                                     PutGarbage()
                                     break
