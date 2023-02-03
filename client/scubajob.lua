@@ -8,7 +8,7 @@ local Scuba_Options = {
     AnchorBoatCommand = true,
     AnchorBoatWord = 'anchorboat',
     Boss = {
-        Location = vector4(-750.78, -1412.76, 5.0, 229.98),
+        Location = vector4(-775.8531, -1433.42, 1.595219, 288.6797),
         Model = 's_m_m_dockwork_01',
     },
     Sprite = {
