@@ -45,7 +45,7 @@ end)
 if Config.UseESX then
 	ESX.RegisterUsableItem(Config.ScubaItemName, function(source)
 		local xPlayer = ESX.GetPlayerFromId(source)
-        TriggerEvent('angelicxs-CivilianJobs:ScubaJob:ScubaMode',source)
+        TriggerClientEvent('angelicxs-CivilianJobs:ScubaJob:ScubaMode',source)
 	end)
 elseif Config.UseQBCore then
     QBCore.Functions.CreateUseableItem(Config.ScubaItemName, function(source, item)
