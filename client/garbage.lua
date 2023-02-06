@@ -270,6 +270,7 @@ if Config.GarbageJobOn then
                                 DrawText3Ds(vehiclecoords.x, vehiclecoords.y, vehiclecoords.z, Config.Lang['garbage_put_garbage'])
                                 if IsControlJustReleased(0,47) then
                                     PutGarbage()
+                                    TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['garbage_in_truck'], Config.LangType['info'])
                                     break
                                 end
                             end
@@ -283,9 +284,9 @@ if Config.GarbageJobOn then
         TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['garbage_route_complete'], Config.LangType['success'])
         if Garbage_Options.Payment.flatRate then
             local p = math.floor(routenumber * Garbage_Options.Payment.flatRateAmount)
-            PaymentFlat(p, 'Garbage Job - GarbageRouteManager()')
+            PaymentFlat(tonumber(p), 'Garbage Job - GarbageRouteManager()')
         else
-            DistancePayment(0, totaldist, 'Garbage Job - GarbageRouteManager()', Garbage_Options.Payment.DistanceMultiplier)
+            PaymentFlat((tonumber(totaldist)*tonumber(Garbage_Options.Payment.DistanceMultiplier)), 'Garbage Job - GarbageRouteManager()') -- for distance based payments
         end
         garbageOnJob = false
         totaldist = 0
