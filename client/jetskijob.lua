@@ -216,7 +216,7 @@ if Config.JetSkiJobOn then
     end)
 
     RegisterNetEvent('angelicxs-CivilianJobs:JetskiJob:AskForWork', function()
-        if FreeWork or PlayerJob == Config.JetskiJobName then
+        if FreeWork or PlayerJob == Config.JetSkiJobName then
             if not MissionVehicle then
                 local ChosenJet = Randomizer(Jetski_Options.Boat.Type, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenJet, Jetski_Options.Boat.Spawn, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
