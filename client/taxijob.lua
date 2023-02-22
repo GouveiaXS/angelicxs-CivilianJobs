@@ -339,12 +339,12 @@ if Config.TaxiJobOn then
                 header = Config.Lang['taxi_menu_header_1']..info.name..Config.Lang['taxi_menu_header_2']..info.estimatedFare,
             })
             table.insert(menu, {
-                context = Config.Lang['taxi_menu_yes'],
+                header = Config.Lang['taxi_menu_yes'],
                 event = 'angelicxs-CivilianJobs:taxiJob:JobAccepted',
                 args = { info }
             })
             table.insert(menu, {
-                context = Config.Lang['taxi_menu_no'],
+                header = Config.Lang['taxi_menu_no'],
                 event = 'angelicxs-CivilianJobs:taxiJob:JobAccepted',
             })
         elseif Config.QBMenu then
