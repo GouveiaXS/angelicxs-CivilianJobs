@@ -109,12 +109,12 @@ Config.Lang = {
 	['gen_anchor_boat_on'] = 'You have anchored the boat.',
 
 -- Bus Language
-	['bus_how_to'] = 'Drive to each spot marked on your route and wait for either a passenger to get on or for the passsenger to get off. Payment is made when the passanger gets off the bus. If you skip a stop you must return their to pick up/drop off the passenger.',
+	['bus_how_to'] = 'Drive to each spot marked on your route and wait for either a passenger to get on or for the passsenger to get off. Payment is made when the passenger gets off the bus. If you skip a stop you must return their to pick up/drop off the passenger.',
 	['bus_route_complete'] = 'You have completed the route, return to the bus terminal to return your vehicle or ask for a new route!',
 	['bus_on_route'] = 'You have already been assigned a route, please finish it before requesting a new one!',
 	['bus_start'] = 'Go ahead and complete the route I sent you!',
-	['bus_get_on'] = 'A passanger is getting on.',
-	['bus_get_off'] = 'A passanger is getting off.',
+	['bus_get_on'] = 'A passenger is getting on.',
+	['bus_get_off'] = 'A passenger is getting off.',
 
 -- Forklift Language
 	['forklift_how_to'] = 'Take the forklift ot the indcated spot to pick up the pallet, use numpad 5 and numpad 8 to lower/raise the forks. Drop off the pallet at the indicated truck for payment.',
@@ -130,8 +130,8 @@ Config.Lang = {
 	['taxi_menu_header_2'] = '\nEstimated Fare: $',
 	['taxi_menu_yes'] = 'Accept Fare',
 	['taxi_menu_no'] = 'Decline Fare',
-	['taxi_get_on'] = 'A passanger is getting on.',
-	['taxi_get_off'] = 'A passanger is getting off.',
+	['taxi_get_on'] = 'A passenger is getting on.',
+	['taxi_get_off'] = 'A passenger is getting off.',
 	['taxi_bring_client'] = 'Bring the customer to their destination!',
 	['taxi_fare_accepted'] = 'You accepted the fare, go pick up ',
 	['taxi_fare_declined'] = 'You declined the fare, wait for another request!',
