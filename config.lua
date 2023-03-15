@@ -190,7 +190,8 @@ Config.ErrorCodes = {
 	['009'] = 'A payment failed to occur! (reference from DistancePayment - main.lua)',  -- !!!! If you see this error it was most likely triggered by an injector !!!!
 	['010'] = 'A payment failed to occur! (reference from PaymentFlat - main.lua)',  -- !!!! If you see this error it was most likely triggered by an injector !!!!
 	['011'] = 'A payment failed to occur! (reference from PaymentItem - main.lua)',  -- !!!! If you see this error it was most likely triggered by an injector !!!!
-
+	['012'] = 'Exploit detected.',
+	['013'] = 'The player with the following server ID and license has been dropped for suspected exploit (triggered multiple payment/gain item events within 1 second): ',
 
 
 
