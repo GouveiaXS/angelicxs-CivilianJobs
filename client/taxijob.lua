@@ -232,7 +232,7 @@ local taxiPedNames = {
     'Kris Solomon',
 }
 ----------------------------------------------------------------------
---						    Bus Script       						--
+--						    Taxi Script       						--
 --		It is NOT recommended to change any of the following        --
 ----------------------------------------------------------------------
 
@@ -266,7 +266,7 @@ if Config.TaxiJobOn then
     end)
 
     RegisterNetEvent('angelicxs-CivilianJobs:taxiJob:AskForWork', function()
-        if FreeWork or PlayerJob == Config.taxiJobName then
+        if FreeWork or PlayerJob == Config.TaxiJobName then
             if not MissionVehicle then
                 local ChosenTaxi = Randomizer(Taxi_Options.Taxi.Types, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenTaxi, Taxi_Options.Taxi.Spawn, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
