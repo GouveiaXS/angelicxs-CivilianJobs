@@ -21,7 +21,7 @@ Config.UseESX = false						-- Use ESX Framework
 Config.UseQBCore = true						-- Use QBCore Framework (Ignored if Config.UseESX = true)
 
 Config.NHInput = false						-- Use NH-Input [https://github.com/nerohiro/nh-keyboard]
-Config.NHMenu = false						-- Use NH-Menu [https://github.com/nerohiro/nh-context]
+Config.NHMenu = false						-- Use NH-Menu [https://github.com/whooith/nh-context]
 Config.QBInput = true						-- Use QB-Input (Ignored if Config.NHInput = true) [https://github.com/qbcore-framework/qb-input]
 Config.QBMenu = true						-- Use QB-Menu (Ignored if Config.NHMenu = true) [https://github.com/qbcore-framework/qb-menu]
 Config.OXLib = false						-- Use the OX_lib (Ignored if Config.NHInput or Config.QBInput = true) [https://github.com/overextended/ox_lib]  !! must add shared_script '@ox_lib/init.lua' and lua54 'yes' to fxmanifest!!
