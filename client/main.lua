@@ -233,7 +233,6 @@ RegisterNetEvent('angelicxs-CivilianJobs:MAIN:RouteMarker', function(table, rout
             local coord = GetEntityCoords(PlayerPedId())
 	    local safeCoord = vector3(route.x, route.y, route.z)
             local dist = #(coord-safeCoord)
-            local dist = #(coord-route)
             if dist <= 75 then
                 sleep = 550
                 if dist <= 25 then
