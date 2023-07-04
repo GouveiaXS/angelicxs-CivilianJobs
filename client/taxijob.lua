@@ -497,7 +497,7 @@ if Config.TaxiJobOn then
     function GetOffTaxi(inital, final)
         TaskLeaveVehicle(taxiPed, MissionVehicle, 0)
         if Taxi_Options.Payment.flatRate then
-            PaymentFlat(Taxi_Options.Payment, 'GetOffTaxi()')
+            PaymentFlat(Taxi_Options.Payment.flatRateAmount, 'GetOffTaxi()')
         else
             DistancePayment(inital, final, 'GetOffTaxi()', Taxi_Options.Payment.DistanceMultiplier)
         end
