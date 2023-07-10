@@ -49,7 +49,8 @@ end)
 RegisterServerEvent('angelicxs-CivilianJobs:Server:GainItem')
 AddEventHandler('angelicxs-CivilianJobs:Server:GainItem', function(name, amount)
     local src = source
-    if recPaid[src] then
+    local exp = tosting(src..'item')
+    if recPaid[exp] then
         local license =  'Unknown'
         for k, v in ipairs(GetPlayerIdentifiers(src)) do
             print(k,v)
@@ -62,7 +63,7 @@ AddEventHandler('angelicxs-CivilianJobs:Server:GainItem', function(name, amount)
         print("\n\n\n"..Config.ErrorCodes['012']..' '..Config.ErrorCodes['013']..' '..src..' '..license.."\n\n\n")
         return
     else
-        recPaid[src] = true
+        recPaid[exp] = true
     end
     if Config.UseESX then
         local xPlayer = ESX.GetPlayerFromId(src)
@@ -73,7 +74,7 @@ AddEventHandler('angelicxs-CivilianJobs:Server:GainItem', function(name, amount)
     end
     TriggerClientEvent('angelicxs-CivilianJobs:Notify',src, Config.Lang['payment_notice_item']..' '..tostring(amount)..' '..tostring(name), Config.LangType['success'])
     Wait(1000)
-    recPaid[src] = false
+    recPaid[exp] = false
 end)
 
 if Config.UseESX then
