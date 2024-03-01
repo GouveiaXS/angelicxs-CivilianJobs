@@ -367,12 +367,16 @@ if Config.TaxiJobOn then
             })
         elseif Config.OXLib then
             table.insert(menu, {
-                label = Config.Lang['taxi_menu_yes'],
-                args = { data = info}
+                title = Config.Lang['taxi_menu_yes'],
+                onSelect = function()
+                    TriggerEvent("angelicxs-CivilianJobs:taxiJob:JobAccepted", info)
+                end,
             })
             table.insert(menu, {
-                label = Config.Lang['taxi_menu_no'],
-                args = { data = nil }
+                title = Config.Lang['taxi_menu_no'],
+                onSelect = function()
+                    TriggerEvent("angelicxs-CivilianJobs:taxiJob:JobAccepted", false)
+                end,
             })
         end
         if Config.NHMenu then
@@ -380,15 +384,14 @@ if Config.TaxiJobOn then
         elseif Config.QBMenu then
             TriggerEvent("qb-menu:client:openMenu", menu)
         elseif Config.OXLib then
-            lib.registerMenu({
+            lib.registerContext({
                 id = 'taximenu_ox',
-                title = Config.Lang['taxi_menu_header_1']..info.name..Config.Lang['taxi_menu_header_2']..info.estimatedFare,
                 options = menu,
+                title = Config.Lang['taxi_menu_header_1']..info.name..Config.Lang['taxi_menu_header_2']..info.estimatedFare,
                 position = 'top-right',
             }, function(selected, scrollIndex, args)
-                    TriggerEvent("angelicxs-CivilianJobs:taxiJob:JobAccepted", args.data)
             end)
-            lib.showMenu('taximenu_ox')
+            lib.showContext('taximenu_ox')
         end 
     end)
 
