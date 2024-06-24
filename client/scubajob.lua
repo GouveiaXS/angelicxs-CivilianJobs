@@ -3,7 +3,7 @@
 --			 The following options can be changed to make your      --
 --			  scub job unique and suit your server            		--
 ----------------------------------------------------------------------
-
+local ChosenBoat = false
 local Scuba_Options = {
     AnchorBoatCommand = true,
     AnchorBoatWord = 'anchorboat',
@@ -14,7 +14,7 @@ local Scuba_Options = {
     Sprite = {
         icon = 729,
         colour = 12,
-        name = 'Angelic UnderSea Group',
+        name = 'UnderSea Group',
     },
     Boat = {
         Spawn = vector4(-776.09, -1429.82, -0.47, 134.08),
@@ -22,15 +22,15 @@ local Scuba_Options = {
             'dinghy',
         }
     },
-    UnderwaterTimer = 300, -- In seconds
+    UnderwaterTimer = 420, -- In seconds
     Payment = {
-        flatRate = false,
-        flatRateAmount = 100,
+        flatRate = true,
+        flatRateAmount = 1500,
         items = true,
         itemList = {
-            {name = 'rubber', min = 1, max = 5},
-            {name = 'metalscrap', min = 1, max = 5},
-
+            {name = 'rubber', min = 2, max = 8},
+            {name = 'plastic', min = 4, max = 8},
+            {name = 'copper', min = 5, max = 8},
         }
     },
 }
@@ -100,6 +100,7 @@ local ScubaTank = false
 local Timer = 0
 local anchor = false
 local anchoredboat = nil
+local RegionCheck = false
 
 if Config.ScubaJobOn then
     if Scuba_Options.AnchorBoatCommand then
@@ -148,16 +149,22 @@ if Config.ScubaJobOn then
         print(Config.Lang['scuba_how_to'])
     end)
 
+    RegisterNetEvent('angelicxs-CivilianJobs:Main:ResetJobs', function()
+        ChosenBoat = false
+    end)
+
     RegisterNetEvent('angelicxs-CivilianJobs:ScubaJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.ScubaJobName then
             if not MissionVehicle then
-                local ChosenBoat = Randomizer(Scuba_Options.Boat.Type, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
+                ChosenBoat = Randomizer(Scuba_Options.Boat.Type, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
                 while not ChosenBoat do Wait(10) end
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenBoat, Scuba_Options.Boat.Spawn, 'angelicxs-CivilianJobs:ScubaJob:AskForWork')
                 while not DoesEntityExist(MissionVehicle) do
                     Wait(25)
                 end
                 TriggerEvent('angelicxs-CivilianJobs:ScubaJob:BeginWork')
+            elseif GetEntityModel(MissionVehicle) ~= GetHashKey(ChosenBoat) then
+                TriggerEvent('angelicxs-CivilianJobs:Notify', "You must have the proper work vehicle to do this kind of job!", Config.LangType['error'])
             else
                 TriggerEvent('angelicxs-CivilianJobs:ScubaJob:BeginWork')
             end
@@ -169,6 +176,7 @@ if Config.ScubaJobOn then
     RegisterNetEvent('angelicxs-CivilianJobs:ScubaJob:BeginWork', function()
         if Region == nil then
             Region = Randomizer(crateOptions.Location, 'angelicxs-CivilianJobs:ScubaJob:BeginWork')
+            RegionCheck = true
             local area = nil
             local amount = 0
             while Region == nil do Wait(10) end
@@ -178,10 +186,11 @@ if Config.ScubaJobOn then
                 end
                 CreateThread(function()
                     local spot = Region[i]
-                    while true do -- Waits until player is close to spawn items
+                    while true and RegionCheck do -- Waits until player is close to spawn items
                         if #(GetEntityCoords(PlayerPedId()) - spot) <= 120 then break end
-                        Wait(1100)
+                        Wait(0)
                     end
+                    if not RegionCheck then return end
                     Wait(i*250)
                     local crateType = Randomizer(crateOptions.Style, 'angelicxs-CivilianJobs:ScubaJob:BeginWork')
                     while not crateType do Wait(10) end
@@ -387,6 +396,7 @@ if Config.ScubaJobOn then
         end
         Region = nil
         ScubaMode = false
+        RegionCheck = false
         CrateTable = {}
     end)
 end
