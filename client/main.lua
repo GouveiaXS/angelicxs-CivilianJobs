@@ -134,6 +134,9 @@ RegisterNetEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', function(model, sp
         if DoesEntityExist(MissionVehicle) then
             print(Config.ErrorCodes['dev'], Config.ErrorCodes['006'], tostring(askedEvent))
         else
+	    if type(spawn) == 'table' then
+                spawn = Randomizer(spawn, askedEvent)
+            end
             local hash = HashGrabber(model)
             ClearAreaOfVehicles(spawn.x,spawn.y,spawn.z, 5, false, false, false, false, false)
             MissionVehicle = CreateVehicle(hash, spawn.x,spawn.y,spawn.z, true, true)
