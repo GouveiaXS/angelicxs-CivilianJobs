@@ -27,10 +27,20 @@ Taxi_Options.Taxi = {
     Types = {
         'taxi',
     },
-    Spawn = vector4(900.15, -180.67, 73.87, 243.76),
+    SpawnLocations = {
+        vector4(916.45, -170.62, 74.44, 103.39),
+        vector4(918.35, -167.02, 74.63, 98.34),
+        vector4(921.18, -163.46, 74.86, 96.32),
+        vector4(914.07, -160.41, 74.74, 197.14),
+        vector4(911.35, -163.17, 74.38, 199.78),
+        vector4(909.29, -183.58, 74.19, 60.71),
+        vector4(907.39, -186.44, 74.03, 62.95),
+        vector4(905.68, -189.32, 73.81, 56.6),
+        vector4(897.4, -183.6, 73.76, 239.29),
+        vector4(898.92, -180.4, 73.82, 238.54),
+    },
     MinWait = 30, -- Minimum time (in seconds) between calls
     MaxWait = 90, -- Maximum time (in seconds) between calls
-
 }
 
 Taxi_Options.Routes = { -- All locations are where the NPC would stand for the taxi
@@ -265,11 +275,18 @@ if Config.TaxiJobOn then
         print(Config.Lang['taxi_how_to'])
     end)
 
+    -- Function to get a random spawn location for the Taxi
+    function GetRandomSpawnLocation()
+        local index = math.random(1, #Taxi_Options.Taxi.SpawnLocations)
+        return Taxi_Options.Taxi.SpawnLocations[index]
+    end
+
     RegisterNetEvent('angelicxs-CivilianJobs:taxiJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.TaxiJobName then
             if not MissionVehicle then
                 local ChosenTaxi = Randomizer(Taxi_Options.Taxi.Types, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
-                TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenTaxi, Taxi_Options.Taxi.Spawn, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
+                local spawnLocation = GetRandomSpawnLocation()
+                TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenTaxi, spawnLocation, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
                 while not DoesEntityExist(MissionVehicle) do
                     Wait(25)
                 end
