@@ -275,18 +275,12 @@ if Config.TaxiJobOn then
         print(Config.Lang['taxi_how_to'])
     end)
 
-    -- Function to get a random spawn location for the Taxi
-    function GetRandomSpawnLocation()
-        local index = math.random(1, #Taxi_Options.Taxi.SpawnLocations)
-        return Taxi_Options.Taxi.SpawnLocations[index]
-    end
-
     RegisterNetEvent('angelicxs-CivilianJobs:taxiJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.TaxiJobName then
             if not MissionVehicle then
                 local ChosenTaxi = Randomizer(Taxi_Options.Taxi.Types, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
                 local spawnLocation = GetRandomSpawnLocation()
-                TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenTaxi, spawnLocation, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
+                TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenTaxi, Taxi_Options.Taxi.SpawnLocations, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
                 while not DoesEntityExist(MissionVehicle) do
                     Wait(25)
                 end
