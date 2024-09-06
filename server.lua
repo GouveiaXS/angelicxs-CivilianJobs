@@ -11,8 +11,8 @@ end
 AddEventHandler('onResourceStart', function(resource)
     local partB = 'ngelicxs-CivilianJobs'
     local name = tostring('a'..partB)
-    if GetCurrentResourceName() ~= name then
-        print('This script was brought to you by A'..'ngelicXS! However, the resource name has been changed. Thank you for using this resource and consider renaming it to help support scripts like it.')
+    if GetCurrentResourceName() == resource and GetCurrentResourceName() ~= name then
+        print('Your civilian job script was brought to you by A'..'ngelicXS! However, the resource name has been changed. Thank you for using this resource and consider renaming it to help support scripts like it.')
     end
 end)
 
