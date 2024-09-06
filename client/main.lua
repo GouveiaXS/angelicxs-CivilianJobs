@@ -1,7 +1,7 @@
 ESX = nil
 QBcore = nil
 PlayerData, PlayerJob = nil, nil
-FreeWork, MissionRoute, MissionVehicle, NPC, VehicleDestroyed = false, nil, nil, nil, false
+FreeWork, MissionRoute, MissionVehicle, NPC, VehicleDestroyed, gettingMissionVehicle = false, nil, nil, nil, false, false
 
 if not Config.UsePlayerJob then
     FreeWork = true
@@ -131,6 +131,7 @@ end)
 
 RegisterNetEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', function(model, spawn, askedEvent)
     if not VehicleDestroyed then
+        gettingMissionVehicle = true
         if DoesEntityExist(MissionVehicle) then
             print(Config.ErrorCodes['dev'], Config.ErrorCodes['006'], tostring(askedEvent))
         else
@@ -150,9 +151,14 @@ RegisterNetEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', function(model, sp
             end
             TriggerEvent('angelicxs-CivilianJobs:VehicleInitation', MissionVehicle)
         end
+        gettingMissionVehicle = false
     else
         TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['vehicle_destroyed_notice'], Config.LangType['info'])
     end
+end)
+
+RegisterNetEvent('angelicxs-CivilianJobs:MAIN:NoContinueMode', function(model, spawn, askedEvent)
+    TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['continous_mode_no_explain'], Config.LangType['info'])
 end)
 
 RegisterNetEvent('angelicxs-CivilianJobs:MAIN:RemoveVehicle', function(area)
@@ -330,6 +336,16 @@ function PaymentItem(a, b, c)
     TriggerServerEvent('angelicxs-CivilianJobs:Server:GainItem', name, math.floor(amount))
 end
 
+function PaymentItemMaterial(a, b, c)
+    if not b or c then
+        print(Config.ErrorCodes['dev'], Config.ErrorCodes['011'])
+        return
+    end
+    local amount = math.random(tonumber(a.min),tonumber(a.max))
+    local name = tostring(a.name)
+    TriggerServerEvent('angelicxs-CivilianJobs:Server:GainItemMaterial', name, math.floor(amount))
+end
+
 -- Animation Loader
 function LoadAnim(dict)
     RequestAnimDict(dict)
@@ -361,13 +377,7 @@ function Randomizer(list, askedEvent)
     if list ~= nil then
         local current = 0
         local selection = math.random(1, #list)
-        for i = 1, #list do
-            current = current + 1
-            if current == selection then
-                return list[i]
-            end
-        end
-        print(Config.ErrorCodes['dev'], Config.ErrorCodes['002'], 'Randomizer - main.lua')
+        return list[selection]
     else
         print(Config.ErrorCodes['dev'], Config.ErrorCodes['001'], tostring(askedEvent))
         return
@@ -390,6 +400,34 @@ function DrawText3Ds(x,y,z, text)
     DrawRect(_x,_y+0.0125, 0.015+ factor, 0.03, 41, 11, 41, 68)
 end
 
+-- Menu inputs
+function jobMainMenu(headerName, options)
+    local menu = {}
+    if Config.NHMenu or Config.QBMenu then
+        table.insert(menu, {
+            header = headerName,
+            isMenuHeader = true
+        })
+    end
+    for i = 1, #options do
+        table.insert(menu, options)
+    end
+    if Config.NHMenu then
+        TriggerEvent("nh-context:createMenu", menu)
+    elseif Config.QBMenu then
+        TriggerEvent("qb-menu:client:openMenu", menu)
+    elseif Config.OXLib then
+        lib.registerContext({
+            id = headerName,
+            options = menu,
+            title = headerName,
+            position = 'top-right',
+        }, function(selected, scrollIndex, args)
+        end)
+        lib.showContext(headerName)
+    end 
+end
+
 RegisterNetEvent('angelicxs-CivilianJobs:Main:ResetJobs')
 AddEventHandler('angelicxs-CivilianJobs:Main:ResetJobs', function()
     if DoesBlipExist(MissionRoute) then
@@ -404,11 +442,38 @@ AddEventHandler('angelicxs-CivilianJobs:Main:ResetJobs', function()
     end
 end)
 
+function jobMainMenu(headerName, options)
+    local menu = {}
+    if Config.NHMenu or Config.QBMenu then
+        table.insert(menu, {
+            header = headerName,
+            isMenuHeader = true
+        })
+    end
+    for k,v in pairs(options) do 
+        table.insert(menu, v)
+    end
+    if Config.NHMenu then
+        TriggerEvent("nh-context:createMenu", menu)
+    elseif Config.QBMenu then
+        TriggerEvent("qb-menu:client:openMenu", menu)
+    elseif Config.OXLib then
+        lib.registerContext({
+            id = headerName,
+            options = menu,
+            title = headerName,
+            position = 'top-right',
+        }, function(selected, scrollIndex, args)
+        end)
+        lib.showContext(headerName)
+    end 
+end
+
 AddEventHandler('onResourceStart', function(resource)
     local partB = 'ngelicxs-CivilianJobs'
     local name = tostring('a'..partB)
-    if GetCurrentResourceName() ~= name then
-        print('This script was brought to you by A'..'ngelicXS! However, the resource name has been changed. Thank you for using this resource and consider renaming it to help support scripts like it.')
+    if GetCurrentResourceName() == resource and GetCurrentResourceName() ~= name then
+        print('Your civilian job script was brought to you by A'..'ngelicXS! However, the resource name has been changed. Thank you for using this resource and consider renaming it to help support scripts like it.')
     end
 end)
 
