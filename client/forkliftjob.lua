@@ -15,13 +15,26 @@ local Forklift_Options = {
         name = 'Angelic Loading Company',
     },
     Forklift = {
-        Spawn = vector4(284.96, -3150.36, 5.81, 7.45),
+        Spawn = {
+            vector4(289.28, -3160.55, 5.82, 90.54),
+            vector4(289.23, -3158.36, 5.81, 93.03),
+            vector4(289.17, -3156.27, 5.8, 91.92)
+        },
         Name = 'forklift'
     },
     Payment = {
         flatRate = false,
         flatRateAmount = 100,
         DistanceMultiplier = 0.25, -- Only applies if flatRate = false, pays driver based on multiplying distance from pick up to drop off.
+        materialGain = true, -- if true will give every item in the materialList to the player
+        materialList = { -- List of items to give to play when they RECEIVE PAYMENT
+            {name = 'rubber', min = 1, max = 2},
+            {name = 'plastic', min = 1, max = 2},
+            {name = 'metalscrap', min = 1, max = 2},
+            {name = 'copper', min = 1, max = 2},
+            {name = 'iron', min = 1, max = 2},
+            {name = 'steel', min = 1, max = 2},
+        },
     },
 }
 
@@ -90,6 +103,7 @@ if Config.ForkliftJobOn then
 
     RegisterNetEvent('angelicxs-CivilianJobs:ForkliftJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.ForkliftJobName then
+            if gettingMissionVehicle then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['getting_vehicle'], Config.LangType['error']) return end
             if not MissionVehicle then
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', Forklift_Options.Forklift.Name, Forklift_Options.Forklift.Spawn, 'angelicxs-CivilianJobs:ForkliftJob:AskForWork')
                 while not DoesEntityExist(MissionVehicle) do
@@ -106,7 +120,6 @@ if Config.ForkliftJobOn then
 
     RegisterNetEvent('angelicxs-CivilianJobs:ForkliftJob:BeginWork', function()
         if not DoesEntityExist(palletItem) then
-            TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['forklift_start'], Config.LangType['info'])
             PalletCreator()
         else
             TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['forklift_on_job'], Config.LangType['error'])
@@ -121,6 +134,29 @@ if Config.ForkliftJobOn then
         while not palletType and not location do Wait(10) end
         local hash = HashGrabber(palletType)
         while not hash do Wait(10) end
+        local timeOut = #palletOptions.Location
+        while true do 
+            local obj = 0
+            for i = 1, #palletOptions.Style do
+                local type = HashGrabber(palletOptions.Style[i])
+                obj = GetClosestObjectOfType(location, 1.0, type, false)
+                if DoesEntityExist(obj) then
+                    location = Randomizer(palletOptions.Location, 'PalletCreator()')
+                    break
+                end
+            end 
+            if obj == 0 then
+                break
+            else
+                timeOut = timeOut - 1
+                if timeOut <= 0 then
+                    break
+                end
+            end
+            Wait(100)
+        end
+        if timeOut <= 0 then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['forklift_no_pallets'], Config.LangType['error']) return end
+        TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['forklift_start'], Config.LangType['info'])
         palletItem = CreateObject(hash, location.x, location.y, location.z-0.95, true, true, true)
         PlaceObjectOnGroundProperly(palletItem)
         SetEntityAsMissionEntity(palletItem, true, true)
@@ -169,7 +205,41 @@ if Config.ForkliftJobOn then
         else
             DistancePayment(inital, location, 'Forklift Job - DropLocation()', Forklift_Options.Payment.DistanceMultiplier)
         end
+        if Forklift_Options.Payment.materialGain then
+            for i = 1, #Forklift_Options.Payment.materialList do
+                PaymentItemMaterial(Forklift_Options.Payment.materialList[i], 'Forklift Job - DropLocation()')
+            end
+        end
         TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['forklift_job_complete'], Config.LangType['success'])
+        if Config.ContinousMode then
+            local headerName = Config.Lang['continous_mode_header']
+            local options = {
+                {
+                    header = Config.Lang['continous_mode_yes'], -- nh / qbmenu
+                    txt = Config.Lang['continous_mode_yes'], -- nh / qbmenu
+                    event = 'angelicxs-CivilianJobs:ForkliftJob:BeginWork', -- nh
+                    params = { -- qb menu
+                        event = 'angelicxs-CivilianJobs:ForkliftJob:BeginWork',
+                    },
+                    title = Config.Lang['continous_mode_yes'], -- oxlibs
+                    onSelect = function() -- oxlibs
+                        TriggerEvent("angelicxs-CivilianJobs:ForkliftJob:BeginWork")
+                    end,
+                },
+                {
+                    header = Config.Lang['continous_mode_no'], -- nh / qbmenu
+                    event = 'angelicxs-CivilianJobs:MAIN:NoContinueMode', -- nh
+                    params = { -- qb menu
+                        event = 'angelicxs-CivilianJobs:MAIN:NoContinueMode',
+                    },
+                    title = Config.Lang['continous_mode_no'], -- oxlibs
+                    onSelect = function() -- oxlibs
+                        TriggerEvent("angelicxs-CivilianJobs:MAIN:NoContinueMode")
+                    end,
+                },
+            }
+            jobMainMenu(headerName, options)
+        end
     end
 
     AddEventHandler('angelicxs-CivilianJobs:Main:ResetJobs', function()
