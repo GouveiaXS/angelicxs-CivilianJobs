@@ -15,7 +15,12 @@ local Garbage_Options = {
         name = 'Angelic Trash Management',
     },
     Truck = {
-        Spawn = vector4(-320.69, -1527.13, 27.55, 274.8),
+        Spawn = {
+            vector4(-319.49, -1520.59, 27.55, 180.76),
+            vector4(-325.97, -1520.99, 27.54, 179.45),
+            vector4(-332.25, -1520.61, 27.54, 183.55),
+
+        },
         Type = {
             'trash',
             'trash2',
@@ -25,7 +30,16 @@ local Garbage_Options = {
         flatRate = false,
         flatRateAmount = 100,
         DistanceMultiplier = 1, -- Only applies if flatRate = false, pays driver based on multiplying distance from pick up to drop off.
-        itemList = {
+        materialGain = true, -- if true will give every item in the materialList to the player
+        materialList = { -- List of items to give to play when they RECEIVE PAYMENT
+            {name = 'rubber', min = 1, max = 2},
+            {name = 'plastic', min = 1, max = 2},
+            {name = 'metalscrap', min = 1, max = 2},
+            {name = 'copper', min = 1, max = 2},
+            {name = 'iron', min = 1, max = 2},
+            {name = 'steel', min = 1, max = 2},
+        },
+        itemList = { -- List of items received by player when SEARCHING GARBAGE (REQUIRES SearchGarbage = true)
             {name = 'rubber', min = 1, max = 2},
             {name = 'metalscrap', min = 1, max = 2},
         },
@@ -109,6 +123,7 @@ if Config.GarbageJobOn then
 
     RegisterNetEvent('angelicxs-CivilianJobs:GarbageJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.GarbageJobName then
+            if gettingMissionVehicle then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['getting_vehicle'], Config.LangType['error']) return end
             if not MissionVehicle then
                 local ChosenVehicle = Randomizer(Garbage_Options.Truck.Type, 'angelicxs-CivilianJobs:GarbageJob:AskForWork')
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenVehicle, Garbage_Options.Truck.Spawn, 'angelicxs-CivilianJobs:GarbageJob:AskForWork')
@@ -280,7 +295,6 @@ if Config.GarbageJobOn then
                 Wait(sleep)            
             end
         end    
-        TriggerEvent('angelicxs-CivilianJobs:MAIN:RouteMarker', false, vector3(Garbage_Options.Truck.Spawn.x, Garbage_Options.Truck.Spawn.y, Garbage_Options.Truck.Spawn.z), 'Garbage Terminal', 'GarbageRouteManager()')
         TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['garbage_route_complete'], Config.LangType['success'])
         if Garbage_Options.Payment.flatRate then
             local p = math.floor(routenumber * Garbage_Options.Payment.flatRateAmount)
@@ -288,9 +302,44 @@ if Config.GarbageJobOn then
         else
             PaymentFlat((tonumber(totaldist)*tonumber(Garbage_Options.Payment.DistanceMultiplier)), 'Garbage Job - GarbageRouteManager()') -- for distance based payments
         end
+        if Garbage_Options.Payment.materialGain then
+            for i = 1, #Garbage_Options.Payment.materialList do
+                PaymentItemMaterial(Garbage_Options.Payment.materialList[i], 'Garbage Job - GarbageRouteManager()')
+            end
+        end
         garbageOnJob = false
         totaldist = 0
         assignedRoute = {}
+        if Config.ContinousMode then
+            local headerName = Config.Lang['continous_mode_header']
+            local options = {
+                {
+                    header = Config.Lang['continous_mode_yes'], -- nh / qbmenu
+                    event = 'angelicxs-CivilianJobs:GarbageJob:BeginWork', -- nh
+                    params = { -- qb menu
+                        event = 'angelicxs-CivilianJobs:GarbageJob:BeginWork',
+                    },
+                    title = Config.Lang['continous_mode_yes'], -- oxlibs
+                    onSelect = function() -- oxlibs
+                        TriggerEvent("angelicxs-CivilianJobs:GarbageJob:BeginWork")
+                    end,
+                },
+                {
+                    header = Config.Lang['continous_mode_no'], -- nh / qbmenu
+                    event = 'angelicxs-CivilianJobs:MAIN:NoContinueMode', -- nh
+                    params = { -- qb menu
+                        event = 'angelicxs-CivilianJobs:MAIN:NoContinueMode',
+                    },
+                    title = Config.Lang['continous_mode_no'], -- oxlibs
+                    onSelect = function() -- oxlibs
+                        TriggerEvent("angelicxs-CivilianJobs:MAIN:NoContinueMode")
+                    end,
+                },
+            }
+            jobMainMenu(headerName, options)
+        else
+            TriggerEvent('angelicxs-CivilianJobs:MAIN:RouteMarker', false, vector3(Garbage_Options.Truck.Spawn.x, Garbage_Options.Truck.Spawn.y, Garbage_Options.Truck.Spawn.z), 'Garbage Terminal', 'GarbageRouteManager()')
+        end
     end
     
     function GetGarbage()
