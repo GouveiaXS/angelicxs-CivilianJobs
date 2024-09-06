@@ -107,6 +107,7 @@ Config.Lang = {
 	['gen_anchor_boat_activate'] = 'You must be in the driver seat to anchor or unachor a boat.',
 	['gen_anchor_boat_off'] = 'You have unanchored the boat.',
 	['gen_anchor_boat_on'] = 'You have anchored the boat.',
+	['getting_vehicle'] = "I am getting your vehicle ready for you now!",
 
 -- Bus Language
 	['bus_how_to'] = 'Drive to each spot marked on your route and wait for either a passenger to get on or for the passsenger to get off. Payment is made when the passenger gets off the bus. If you skip a stop you must return their to pick up/drop off the passenger.',
@@ -121,6 +122,7 @@ Config.Lang = {
 	['forklift_start'] = 'Go grab the ordered pallet and put it in the marked truck!',
 	['forklift_on_job'] = 'You have not finished the current order!',
 	['forklift_job_complete'] = 'You have completed the order, return the forklift or ask for a new order!',
+	['forklift_no_pallets'] = "Try again later, looks like all of our work is being handled!",
 
 -- Taxi Language
 	['taxi_how_to'] = 'After a period of time you will be provided a fare you can choose to accept or decline, if you decline you will need to wait for another fare to appear. Upon acceptance pick up the indiviudal and drop them off for payment.',
