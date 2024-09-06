@@ -24,6 +24,15 @@ local Jetski_Options = {
         flatRate = false,
         flatRateAmount = 100,
         DistanceMultiplier = 1, -- Only applies if flatRate = false, pays driver based on multiplying distance from pick up to drop off.
+        materialGain = true, -- if true will give every item in the materialList to the player
+        materialList = { -- List of items to give to play when they RECEIVE PAYMENT
+            {name = 'rubber', min = 1, max = 2},
+            {name = 'plastic', min = 1, max = 2},
+            {name = 'metalscrap', min = 1, max = 2},
+            {name = 'copper', min = 1, max = 2},
+            {name = 'iron', min = 1, max = 2},
+            {name = 'steel', min = 1, max = 2},
+        },
     },
 }
 
@@ -217,6 +226,7 @@ if Config.JetSkiJobOn then
 
     RegisterNetEvent('angelicxs-CivilianJobs:JetskiJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.JetSkiJobName then
+            if gettingMissionVehicle then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['getting_vehicle'], Config.LangType['error']) return end
             if not MissionVehicle then
                 local ChosenJet = Randomizer(Jetski_Options.Boat.Type, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenJet, Jetski_Options.Boat.Spawn, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
@@ -340,7 +350,40 @@ if Config.JetSkiJobOn then
         else
             DistancePayment(inital, location, 'JetSki Job - SwimDropLocation()', Jetski_Options.Payment.DistanceMultiplier)
         end
+        if Jetski_Options.Payment.materialGain then
+            for i = 1, #Jetski_Options.Payment.materialList do
+                PaymentItemMaterial(Jetski_Options.Payment.materialList[i], 'JetSki Job - SwimDropLocation()')
+            end
+        end
         TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['jetski_job_complete'], Config.LangType['success'])
+        if Config.ContinousMode then
+            local headerName = Config.Lang['continous_mode_header']
+            local options = {
+                {
+                    header = Config.Lang['continous_mode_yes'], -- nh / qbmenu
+                    event = 'angelicxs-CivilianJobs:JetskiJob:BeginWork', -- nh
+                    params = { -- qb menu
+                        event = 'angelicxs-CivilianJobs:JetskiJob:BeginWork',
+                    },
+                    title = Config.Lang['continous_mode_yes'], -- oxlibs
+                    onSelect = function() -- oxlibs
+                        TriggerEvent("angelicxs-CivilianJobs:JetskiJob:BeginWork")
+                    end,
+                },
+                {
+                    header = Config.Lang['continous_mode_no'], -- nh / qbmenu
+                    event = 'angelicxs-CivilianJobs:MAIN:NoContinueMode', -- nh
+                    params = { -- qb menu
+                        event = 'angelicxs-CivilianJobs:MAIN:NoContinueMode',
+                    },
+                    title = Config.Lang['continous_mode_no'], -- oxlibs
+                    onSelect = function() -- oxlibs
+                        TriggerEvent("angelicxs-CivilianJobs:MAIN:NoContinueMode")
+                    end,
+                },
+            }
+            jobMainMenu(headerName, options)
+        end
     end
 
     function saveSwimNPC(style, location)
