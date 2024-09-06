@@ -36,7 +36,7 @@ end)
 -- Visual Preference
 Config.Use3DText = false 					-- Use 3D text for NPC/Job interactions; only turn to false if Config.UseThirdEye is turned on and IS working.
 Config.UseThirdEye = true 					-- Enables using a third eye (third eye requires the following arguments debugPoly, useZ, options {event, icon, label}, distance)
-Config.ThirdEyeName = 'qb-target' 			-- Name of third eye aplication
+Config.ThirdEyeName = 'ox_target' 			-- Name of third eye aplication
 Config.UsePedAsJobBoss = true				-- Creates a ped at the interaction location to initiate each job (required if Config.UseThirdEye = true)
 
 -- General Blip Preference
@@ -54,6 +54,7 @@ Config.ScubaItemName = 'diving_gear'		-- Name of scuba gear item to put on/take 
 -- General Configuration
 Config.UsePlayerJob = false					-- If true requires the player to have the appropriate job; job uses and names identified next
 Config.VehicleSteward = true				-- If true, will not let the player do any more jobs if they have returned a destroyed vehicle (they will need to relog to reset this)
+Config.ContinousMode = true					-- If true, will give a menu asking the player to do the next job when they finish instead of going back to the main ped (NOT ENABLED FOR TAXI OR SCUBA JOB).
 Config.BusJobOn = true						-- If true allows the bus job
 Config.BusJobName = 'bus-driver'			-- Name of the bus job, used if Config.UsePlayerJob = true
 Config.ForkliftJobOn = true					-- If true allows the forklift job
@@ -108,6 +109,11 @@ Config.Lang = {
 	['gen_anchor_boat_off'] = 'You have unanchored the boat.',
 	['gen_anchor_boat_on'] = 'You have anchored the boat.',
 	['getting_vehicle'] = "I am getting your vehicle ready for you now!",
+	['continous_mode_header'] = "Start working on another job?",
+	['continous_mode_yes'] = "Yes",
+	['continous_mode_no'] = "No",
+	['continous_mode_no_explain'] = "Head back to the manager to return your vehicle or get another job!",
+
 
 -- Bus Language
 	['bus_how_to'] = 'Drive to each spot marked on your route and wait for either a passenger to get on or for the passsenger to get off. Payment is made when the passenger gets off the bus. If you skip a stop you must return their to pick up/drop off the passenger.',
