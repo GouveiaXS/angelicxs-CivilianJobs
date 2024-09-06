@@ -10,6 +10,15 @@ Taxi_Options.Payment = { -- Pays on drop off of NPC
     flatRate = false,
     flatRateAmount = 100,
     DistanceMultiplier = 0.4, -- Only applies if flatRate = false, pays driver based on multiplying distance from pick up to drop off.
+    materialGain = true, -- if true will give every item in the materialList to the player
+    materialList = { -- List of items to give to play when they RECEIVE PAYMENT
+        {name = 'rubber', min = 1, max = 2},
+        {name = 'plastic', min = 1, max = 2},
+        {name = 'metalscrap', min = 1, max = 2},
+        {name = 'copper', min = 1, max = 2},
+        {name = 'iron', min = 1, max = 2},
+        {name = 'steel', min = 1, max = 2},
+    },
 }
 
 Taxi_Options.Boss = {
@@ -277,6 +286,7 @@ if Config.TaxiJobOn then
 
     RegisterNetEvent('angelicxs-CivilianJobs:taxiJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.TaxiJobName then
+            if gettingMissionVehicle then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['getting_vehicle'], Config.LangType['error']) return end
             if not MissionVehicle then
                 local ChosenTaxi = Randomizer(Taxi_Options.Taxi.Types, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
                 local spawnLocation = GetRandomSpawnLocation()
@@ -511,9 +521,14 @@ if Config.TaxiJobOn then
     function GetOffTaxi(inital, final)
         TaskLeaveVehicle(taxiPed, MissionVehicle, 0)
         if Taxi_Options.Payment.flatRate then
-            PaymentFlat(Taxi_Options.Payment.flatRateAmount, 'GetOffTaxi()')
+            PaymentFlat(Taxi_Options.Payment.flatRateAmount, 'Taxi Job - GetOffTaxi()')
         else
-            DistancePayment(inital, final, 'GetOffTaxi()', Taxi_Options.Payment.DistanceMultiplier)
+            DistancePayment(inital, final, 'Taxi Job - GetOffTaxi()', Taxi_Options.Payment.DistanceMultiplier)
+        end
+        if Taxi_Options.Payment.materialGain then
+            for i = 1, #Taxi_Options.Payment.materialList do
+                PaymentItemMaterial(Taxi_Options.Payment.materialList[i], 'Taxi Job - GetOffTaxi()')
+            end
         end
         TaskGoStraightToCoord(taxiPed, inital.x, inital.y, inital.z, 1.0, -1.0, 0.0, 0.0)
         Wait(2000)
