@@ -155,9 +155,9 @@ if Config.ScubaJobOn then
 
     RegisterNetEvent('angelicxs-CivilianJobs:ScubaJob:AskForWork', function()
         if FreeWork or PlayerJob == Config.ScubaJobName then
+            if gettingMissionVehicle then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['getting_vehicle'], Config.LangType['error']) return end
             if not MissionVehicle then
                 ChosenBoat = Randomizer(Scuba_Options.Boat.Type, 'angelicxs-CivilianJobs:JetskiJob:AskForWork')
-                while not ChosenBoat do Wait(10) end
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenBoat, Scuba_Options.Boat.Spawn, 'angelicxs-CivilianJobs:ScubaJob:AskForWork')
                 while not DoesEntityExist(MissionVehicle) do
                     Wait(25)
