@@ -77,6 +77,37 @@ AddEventHandler('angelicxs-CivilianJobs:Server:GainItem', function(name, amount)
     recPaid[exp] = false
 end)
 
+RegisterServerEvent('angelicxs-CivilianJobs:Server:GainItemMaterial')
+AddEventHandler('angelicxs-CivilianJobs:Server:GainItemMaterial', function(name, amount)
+    local src = source
+    local exp = tostring(src..name)
+    if recPaid[exp] then
+        local license =  'Unknown'
+        for k, v in ipairs(GetPlayerIdentifiers(src)) do
+            print(k,v)
+            if string.match(v, "license:") then
+                license = v
+                break
+            end
+        end
+        DropPlayer(src, Config.ErrorCodes['012'])
+        print("\n\n\n"..Config.ErrorCodes['012']..' '..Config.ErrorCodes['013']..' '..src..' '..license.."\n\n\n")
+        return
+    else
+        recPaid[exp] = true
+    end
+    if Config.UseESX then
+        local xPlayer = ESX.GetPlayerFromId(src)
+		xPlayer.addInventoryItem(name, amount)
+    elseif Config.UseQBCore then
+        local Player = QBCore.Functions.GetPlayer(src)
+        Player.Functions.AddItem(name, amount)
+    end
+    TriggerClientEvent('angelicxs-CivilianJobs:Notify',src, Config.Lang['payment_notice_item']..' '..tostring(amount)..' '..tostring(name), Config.LangType['success'])
+    Wait(1000)
+    recPaid[exp] = false
+end)
+
 if Config.UseESX then
 	ESX.RegisterUsableItem(Config.ScubaItemName, function(source)
 		local xPlayer = ESX.GetPlayerFromId(source)
