@@ -289,7 +289,6 @@ if Config.TaxiJobOn then
             if gettingMissionVehicle then TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['getting_vehicle'], Config.LangType['error']) return end
             if not MissionVehicle then
                 local ChosenTaxi = Randomizer(Taxi_Options.Taxi.Types, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
-                local spawnLocation = GetRandomSpawnLocation()
                 TriggerEvent('angelicxs-CivilianJobs:MAIN:CreateVehicle', ChosenTaxi, Taxi_Options.Taxi.SpawnLocations, 'angelicxs-CivilianJobs:taxiJob:AskForWork')
                 while not DoesEntityExist(MissionVehicle) do
                     Wait(25)
