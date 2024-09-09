@@ -162,6 +162,8 @@ Config.Lang = {
 	['heli_start'] = 'Go pick up priority crate delivery and deliver it to the customer!',
 	['heli_on_job'] = 'You have not finished the current order!',
 	['heli_job_complete'] = 'You have completed the order, return back to the heli pad and either return the helicopter or ask for a new order!',
+	['heli_start_timer'] = "The helicopter has been fueled with only 10 minutes of air time. Complete the job before the fuel runs out and destroys the engine!",
+	['heli_end_timer'] = "The fuel for the helicopter ran out and the engine has been destoryed, bail out!",
 
 -- Lifeguard Language
 	['jetski_how_to'] = 'Get to the inidcated spot to pick up the civilian drowning, then bring them back to the lifeguard to save them and get payment.',
