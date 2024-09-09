@@ -22,7 +22,9 @@ local Heli_Options = {
         },
         Type = {
             'frogger',
-        }
+        },
+        TimeLimit = true, -- If true, will disable the engine of the heli after TIMER length in time (resets when picking up another package)
+        Timer = 10, -- How long in MINUTES until the engine is disabled if TimeLimit = true
     },
     Payment = {
         flatRate = false,
@@ -88,6 +90,7 @@ local crateOptions = {
 local PedSpawned = false
 local CargoItem = nil
 local heliJob = false
+local heliJobLock = false
 
 if Config.HeliJobOn then
     CreateThread(function()
@@ -133,7 +136,26 @@ if Config.HeliJobOn then
     RegisterNetEvent('angelicxs-CivilianJobs:HeliJob:BeginWork', function()
         if not DoesEntityExist(CargoItem) then
             heliJob = true
-            TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['heli_start'], Config.LangType['info'])
+            TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['heli_start'], Config.LangType['info'])      
+            if Heli_Options.Heli.TimeLimit then
+                heliJobLock = false
+                TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['heli_start_timer'], Config.LangType['info'])
+                CreateThread(function()
+                    Wait(2000)
+                    heliJobLock = true
+                    local timer = Heli_Options.Heli.TimeLimit.Timer*60
+                    while heliJobLock do
+                        if not heliJobLock or not DoesEntityExist(MissionVehicle) then break end
+                        Wait(1000)
+                        timer = timer -1
+                        if timer <= 0 then 
+                            SetVehicleUndriveable(MissionVehicle, true)
+                            TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['heli_end_timer'], Config.LangType['error'])
+                            break
+                        end
+                    end
+                end)
+            end
             CargoCrateCreator()
         else
             TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['heli_on_job'], Config.LangType['error'])
