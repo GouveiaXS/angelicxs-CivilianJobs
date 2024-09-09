@@ -234,7 +234,7 @@ if Config.GarbageJobOn then
     end
 
     function GarbageRouteMaker()
-        local init = vector3(Garbage_Options.Truck.Spawn.x, Garbage_Options.Truck.Spawn.y, Garbage_Options.Truck.Spawn.z)
+        local init = vector3(Garbage_Options.Boss.Location.x, Garbage_Options.Boss.Location.y, Garbage_Options.Boss.Location.z)
         local previousLocation = init
         for i =1, #garbagejobOptions.Location do
             local spot = garbagejobOptions.Location[i]
