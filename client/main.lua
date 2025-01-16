@@ -201,7 +201,6 @@ RegisterNetEvent('angelicxs-CivilianJobs:MAIN:RouteMarker', function(table, rout
         print(Config.ErrorCodes['dev'], Config.ErrorCodes['004'], tostring(askedEvent))
         return
     end
-	if MissionRoute then RemoveBlip(MissionRoute) end
     if table then
         for i = 1, #route do
             MissionRoute = AddBlipForCoord(route[i].x, route[i].y, route[i].z)
