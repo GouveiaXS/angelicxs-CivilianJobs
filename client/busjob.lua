@@ -321,9 +321,6 @@ if Config.BusJobOn then
                                 if onBus then
                                     TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['bus_get_off'], Config.LangType['info'])
                                     GetOffBus(safeCoord, lastStop)
-                                    while IsPedInVehicle(busPed, MissionVehicle, true) do
-                                        Wait(500)
-                                    end
                                 else
                                     TriggerEvent('angelicxs-CivilianJobs:Notify', Config.Lang['bus_get_on'], Config.LangType['info'])
                                     GetOnBus(safeCoord)
@@ -371,7 +368,7 @@ if Config.BusJobOn then
             }
             jobMainMenu(headerName, options)
         else
-            TriggerEvent('angelicxs-CivilianJobs:MAIN:RouteMarker', false, Bus_Options.Bus.Spawn, 'Bus Terminal', 'BusRouteManager()')
+            TriggerEvent('angelicxs-CivilianJobs:MAIN:RouteMarker', false, Bus_Options.Boss.Location.xyz, 'Bus Terminal', 'BusRouteManager()')
         end
     end
 
@@ -397,7 +394,6 @@ if Config.BusJobOn then
                 FreezeEntityPosition(busPed, false)
                 ClearPedTasksImmediately(busPed)
                 TaskEnterVehicle(busPed, MissionVehicle, -1, i, 1.0, 1, 0)
-                TaskEnterVehicle(ped, vehicle, timeout, seat, speed, flag, p6)
                 onBus = true
                 return
             end
@@ -407,6 +403,15 @@ if Config.BusJobOn then
 
     function GetOffBus(inital, final)
         TaskLeaveVehicle(busPed, MissionVehicle, 0)
+        local timeout = 5
+        while IsPedInAnyVehicle(busPed) do 
+            timeout = timeout - 1
+            Wait(1000)
+            if timeout < 0 then
+                print("Timeout exceeded releasing position")
+                break
+            end
+        end
         if Bus_Options.Payment.flatRate then
             PaymentFlat(Bus_Options.Payment.flatRateAmount, 'Bus Job - GetOffBus()')
         else
@@ -417,9 +422,6 @@ if Config.BusJobOn then
                 PaymentItemMaterial(Bus_Options.Payment.materialList[i], 'Bus Job - GetOffBus()')
             end
         end
-        TaskGoStraightToCoord(busPed, inital.x, inital.y, inital.z, 1.0, -1.0, 0.0, 0.0)
-        Wait(5000)
-        TaskGoStraightToCoord(busPed, final.x, final.y, final.z, 1.0, -1.0, 0.0, 0.0)
         SetEntityAsNoLongerNeeded(busPed)
         onBus = false
         busPed = nil
