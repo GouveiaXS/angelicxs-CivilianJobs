@@ -49,7 +49,7 @@ end)
 RegisterServerEvent('angelicxs-CivilianJobs:Server:GainItem')
 AddEventHandler('angelicxs-CivilianJobs:Server:GainItem', function(name, amount)
     local src = source
-    local exp = tostring(src..'item')
+    local exp = tostring(src..'item'..name)
     if recPaid[exp] then
         local license =  'Unknown'
         for k, v in ipairs(GetPlayerIdentifiers(src)) do
