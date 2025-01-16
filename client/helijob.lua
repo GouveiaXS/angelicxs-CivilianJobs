@@ -143,7 +143,7 @@ if Config.HeliJobOn then
                 CreateThread(function()
                     Wait(2000)
                     heliJobLock = true
-                    local timer = Heli_Options.Heli.TimeLimit.Timer*60
+                    local timer = Heli_Options.Heli.Timer*60
                     while heliJobLock do
                         if not heliJobLock or not DoesEntityExist(MissionVehicle) then break end
                         Wait(1000)
